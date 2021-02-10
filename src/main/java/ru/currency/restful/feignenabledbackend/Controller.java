@@ -54,8 +54,8 @@ public class Controller {
         }
         for(Currency s : storeCurrencies){
             if(s.getCharCode().equals(charCode)){
-                if(s.getValue()-s.getPrevious()>=0){return "<iframe src=\""+ getGif.getGifGood(apiKey, tagRich).getData().get("embed_url") + "\" width=\"1500\" height=\"700\" frameBorder=\"0\" class=\"giphy-embed\" allowFullScreen>";}
-                else return "<iframe src=\""+ getGif.getGifBad(apiKey, tagBroke).getData().get("embed_url") + "\" width=\"1500\" height=\"700\" frameBorder=\"0\" class=\"giphy-embed\" allowFullScreen>";
+                if(s.getValue()-s.getPrevious()>=0){return "<iframe src=\""+ getGif.getGif(apiKey, tagRich).getData().get("embed_url") + "\" width=\"1500\" height=\"700\" frameBorder=\"0\" class=\"giphy-embed\" allowFullScreen>";}
+                else return "<iframe src=\""+ getGif.getGif(apiKey, tagBroke).getData().get("embed_url") + "\" width=\"1500\" height=\"700\" frameBorder=\"0\" class=\"giphy-embed\" allowFullScreen>";
             }
         }
         return "Страны с таким кодом валюты не существует";
