@@ -29,6 +29,17 @@ class RestfulApplicationTests {
     @Value("${url-test.bad.gif}")
     private String testBadGif;
 
+    @Value("${application-id}")
+    private String appId;
+    @Value("${application-key}")
+    private String apiKey;
+    @Value("${tag-rich}")
+    private String tagRich;
+    @Value("${tag-broke}")
+    private String tagBroke;
+    @Value("${size-gif}")
+    private String sizeGif;
+
     private static String datePrevious;
 
     @BeforeAll
@@ -43,11 +54,11 @@ class RestfulApplicationTests {
     @Test
     public void testAnswerBad() {
         GetCurrency getCurrency = mock(GetCurrency.class);
-        when(getCurrency.getBaseObjectLatest(any())).thenReturn(new BaseObject("s1", "s2", "s3", "s4", new TreeMap<>(){{put("AFN", 77.299992);}}));
-        when(getCurrency.getBaseObjectHistorical(eq(datePrevious), any())).thenReturn(new BaseObject("s1", "s2", "s3", "s4", new TreeMap<>(){{put("AFN", 77.426279);}}));
+        when(getCurrency.getBaseObjectLatest(appId)).thenReturn(new BaseObject("s1", "s2", "s3", "s4", new TreeMap<>(){{put("AFN", 77.299992);}}));
+        when(getCurrency.getBaseObjectHistorical(datePrevious, appId)).thenReturn(new BaseObject("s1", "s2", "s3", "s4", new TreeMap<>(){{put("AFN", 77.426279);}}));
         GetGif getGif = mock(GetGif.class);
-        when(getGif.getGifBad(any(), any())).thenReturn(new Gif(new LinkedHashMap<>(){{put("embed_url", "https://giphy.com/embed/Km2YiI2mzRKgw");}}, new LinkedHashMap<>(){{put("s1", "s2");}}));
-        Controller controller = new Controller(getCurrency, getGif);
+        when(getGif.getGif(any(), any())).thenReturn(new Gif(new LinkedHashMap<>(){{put("embed_url", "https://giphy.com/embed/Km2YiI2mzRKgw");}}, new LinkedHashMap<>(){{put("s1", "s2");}}));
+        Controller controller = new Controller(getCurrency, getGif, appId, apiKey, tagRich, tagBroke, sizeGif);
         String result = controller.answer("AFN");
 
         String expected = testBadGif;
@@ -57,11 +68,11 @@ class RestfulApplicationTests {
     @Test
     public void testAnswerGood() {
         GetCurrency getCurrency = mock(GetCurrency.class);
-        when(getCurrency.getBaseObjectLatest(any())).thenReturn(new BaseObject("s1", "s2", "s3", "s4", new TreeMap<>(){{put("ALL", 102.047197);}}));
-        when(getCurrency.getBaseObjectHistorical(eq(datePrevious), any())).thenReturn(new BaseObject("s1", "s2", "s3", "s4", new TreeMap<>(){{put("ALL", 101.70593);}}));
+        when(getCurrency.getBaseObjectLatest(appId)).thenReturn(new BaseObject("s1", "s2", "s3", "s4", new TreeMap<>(){{put("ALL", 102.047197);}}));
+        when(getCurrency.getBaseObjectHistorical(datePrevious, appId)).thenReturn(new BaseObject("s1", "s2", "s3", "s4", new TreeMap<>(){{put("ALL", 101.70593);}}));
         GetGif getGif = mock(GetGif.class);
-        when(getGif.getGifGood(any(), any())).thenReturn(new Gif(new LinkedHashMap<>(){{put("embed_url", "https://giphy.com/embed/la6Ne7z15BXs4");}}, new LinkedHashMap<>(){{put("s1", "s2");}}));
-        Controller controller = new Controller(getCurrency, getGif);
+        when(getGif.getGif(any(), any())).thenReturn(new Gif(new LinkedHashMap<>(){{put("embed_url", "https://giphy.com/embed/la6Ne7z15BXs4");}}, new LinkedHashMap<>(){{put("s1", "s2");}}));
+        Controller controller = new Controller(getCurrency, getGif, appId, apiKey, tagRich, tagBroke, sizeGif);
         String result = controller.answer("ALL");
 
         String expected = testGoodGif;
@@ -71,11 +82,11 @@ class RestfulApplicationTests {
     @Test
     public void testAnswer() {
         GetCurrency getCurrency = mock(GetCurrency.class);
-        when(getCurrency.getBaseObjectLatest(any())).thenReturn(new BaseObject("s1", "s2", "s3", "s4", new TreeMap<>(){{put("ALL", 102.047197);}}));
-        when(getCurrency.getBaseObjectHistorical(eq(datePrevious), any())).thenReturn(new BaseObject("s1", "s2", "s3", "s4", new TreeMap<>(){{put("ALL", 101.70593);}}));
+        when(getCurrency.getBaseObjectLatest(appId)).thenReturn(new BaseObject("s1", "s2", "s3", "s4", new TreeMap<>(){{put("ALL", 102.047197);}}));
+        when(getCurrency.getBaseObjectHistorical(datePrevious, appId)).thenReturn(new BaseObject("s1", "s2", "s3", "s4", new TreeMap<>(){{put("ALL", 101.70593);}}));
         GetGif getGif = mock(GetGif.class);
-        when(getGif.getGifGood(any(), any())).thenReturn(new Gif(new LinkedHashMap<>(){{put("embed_url", "https://giphy.com/embed/la6Ne7z15BXs4");}}, new LinkedHashMap<>(){{put("s1", "s2");}}));
-        Controller controller = new Controller(getCurrency, getGif);
+        when(getGif.getGif(any(), any())).thenReturn(new Gif(new LinkedHashMap<>(){{put("embed_url", "https://giphy.com/embed/la6Ne7z15BXs4");}}, new LinkedHashMap<>(){{put("s1", "s2");}}));
+        Controller controller = new Controller(getCurrency, getGif, appId, apiKey, tagRich, tagBroke, sizeGif);
         String result = controller.answer("AL");
 
         String expected = "Страны с таким кодом валюты не существует";

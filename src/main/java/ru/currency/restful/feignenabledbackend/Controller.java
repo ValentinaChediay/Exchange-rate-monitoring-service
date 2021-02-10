@@ -1,6 +1,5 @@
 package ru.currency.restful.feignenabledbackend;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,21 +14,29 @@ import java.util.Map;
 
 
 @RestController
-@RequiredArgsConstructor
 public class Controller {
     private final GetCurrency getCurrency;
     private final GetGif getGif;
-
-    @Value("${application-id}")
-    private String appId;
-    @Value("${application-key}")
-    private String apiKey;
-    @Value("${tag-rich}")
-    private String tagRich;
-    @Value("${tag-broke}")
-    private String tagBroke;
-    @Value("${size-gif}")
-    private String sizeGif;
+    private final String appId;
+    private final String apiKey;
+    private final String tagRich;
+    private final String tagBroke;
+    private final String sizeGif;
+    public Controller(GetCurrency getCurrency,
+                      GetGif getGif,
+                      @Value("${application-id}") String appId,
+                      @Value("${application-key}") String apiKey,
+                      @Value("${tag-rich}") String tagRich,
+                      @Value("${tag-broke}") String tagBroke,
+                      @Value("${size-gif}") String sizeGif) {
+        this.getCurrency = getCurrency;
+        this.getGif = getGif;
+        this.appId = appId;
+        this.apiKey = apiKey;
+        this.tagRich = tagRich;
+        this.tagBroke = tagBroke;
+        this.sizeGif = sizeGif;
+    }
 
     @GetMapping("/")
     public String countrySelection(){
@@ -55,7 +62,7 @@ public class Controller {
         for(Currency s : storeCurrencies){
             if(s.getCharCode().equals(charCode)){
                 if(s.getValue()-s.getPrevious()>=0){return "<iframe src=\""+ getGif.getGif(apiKey, tagRich).getData().get("embed_url") + "\" width=\"1500\" height=\"700\" frameBorder=\"0\" class=\"giphy-embed\" allowFullScreen>";}
-                else return "<iframe src=\""+ getGif.getGif(apiKey, tagBroke).getData().get("embed_url") + "\" width=\"1500\" height=\"700\" frameBorder=\"0\" class=\"giphy-embed\" allowFullScreen>";
+                else return "<iframe src=\""+ getGif.getGif(apiKey, tagBroke).getData().get("embed_url") + sizeGif;
             }
         }
         return "Страны с таким кодом валюты не существует";
